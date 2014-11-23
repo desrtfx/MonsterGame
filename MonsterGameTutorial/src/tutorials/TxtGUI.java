@@ -31,9 +31,10 @@ public class TxtGUI {
 		System.out.println("\t***                                     ***");
 		System.out.println("\t***  Each turn, you can decide to:      ***");
 		System.out.println("\t***                                     ***");
-		System.out.println("\t***     (1) Attack a monster            ***");
-		System.out.println("\t***     (2) Drink a health potion       ***");
-		System.out.println("\t***     (3) Run away                    ***");
+		System.out.println("\t***     (1)   Attack a monster          ***");
+		System.out.println("\t***     (2)   Drink a health potion     ***");
+		System.out.println("\t***     (3)   Run away                  ***");
+		System.out.println("\t***     (4)   Quit Game                 ***");
 		System.out.println("\t***                                     ***");
 		System.out.println("\t***  Attacking a monster hurts the      ***");
 		System.out.println("\t***  monster. You might also get hurt.  ***");
