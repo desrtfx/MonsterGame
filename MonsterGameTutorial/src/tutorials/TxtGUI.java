@@ -3,9 +3,9 @@ package tutorials;
 import java.util.Scanner;
 
 public class TxtGUI {
-	
+
 	private Scanner in;
-	
+
 	TxtGUI() {
 		in = new Scanner(System.in);
 	}
@@ -20,7 +20,7 @@ public class TxtGUI {
 		System.out.println("\t*******************************************");
 		System.out.println();
 	}
-	
+
 	public void displayInstructions() {
 		System.out.println("\t*******************************************");
 		System.out.println("\t***                                     ***");
@@ -48,13 +48,14 @@ public class TxtGUI {
 		System.out.println("\t***                                     ***");
 		System.out.println("\t***                                     ***");
 		System.out.println("\t*******************************************");
+		System.out.println();
 
 	}
-	
+
 	public int handleMainMenu() {
 		System.out.println("\t*******************************************");
 		System.out.println("\t***                                     ***");
-		System.out.println("\t***            MAIN MENU                ***");
+		System.out.println("\t***       What do you want to do?       ***");
 		System.out.println("\t***                                     ***");
 		System.out.println("\t***     (1)   Attack Monster            ***");
 		System.out.println("\t***     (2)   Drink Health Potion       ***");
@@ -76,5 +77,54 @@ public class TxtGUI {
 		} while ((choice < 1) || (choice > 4));
 		return choice;
 	}
+
+	public void displayNewMonster(Monster monster) {
+		System.out.println("\t*******************************************");
+		System.out.println("\t***                                     ***");
+		System.out.println("\t*** MASTER!                             ***");
+		System.out.println("\t*** A new monster has appeared!         ***");
+		System.out.println("\t***                                     ***");
+		System.out.println(String.format("\t*** Name:   %-27s ***",monster.getName()));
+		System.out.println(String.format("\t*** Health: %-27d ***", monster.getHealth()));
+		System.out.println("\t***                                     ***");
+		System.out.println("\t*******************************************");
+	}
+
+	public void displayFight(Player player, Monster monster, int damagePlayer, int damageMonster) {
+		// TODO displayFight Auto-generated method stub
+		
+	}
+
+	public void displayHealthPotion(Player player, boolean success) {
+		// TODO displayHealthPotion Auto-generated method stub
+		
+	}
+
+	public void displayRunAway(Player player, Monster monster) {
+		// TODO displayRunAway Auto-generated method stub
+		
+	}
+
+	public void displayEndMessage(Player player) {
+		// TODO displayEndMessage Auto-generated method stub
+		
+	}
+
+	public void displayMonsterKill(Player player, Monster monster) {
+		// TODO displayMonsterKill Auto-generated method stub
+		
+	}
+
+	public void displayPlayerKill(Player player, Monster monster) {
+		// TODO displayPlayerKill Auto-generated method stub
+		
+	}
+
+	public void displayStats(Player player, Monster monster) {
+		// TODO displayStats Auto-generated method stub
+		
+	}
+
+	
 	
 }
