@@ -2,11 +2,11 @@ package tutorials;
 
 import java.util.Scanner;
 
-public class MonsterGameTxtGUI {
+public class TxtGUI {
 	
 	private Scanner in;
 	
-	MonsterGameTxtGUI() {
+	TxtGUI() {
 		in = new Scanner(System.in);
 	}
 
