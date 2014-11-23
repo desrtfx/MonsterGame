@@ -7,42 +7,38 @@ public class MonsterGame {
 	public static void main(String[] args) {
 
 		MonsterGame game = new MonsterGame();
-		
+
 		// Initialize the player Object
 		Player player = new Player();
-		
-		// Initialize the Scanner to make it available 
+
+		// Initialize the Scanner to make it available
 		Scanner in = new Scanner(System.in);
-		
+
 		// names of the Monsters
-		String[] enemies = { "Count Dooku", "Azeroth", "Zuul", "The Predator", "Alien Queen" };
-		
+		String[] enemies = { "Count Dooku", "Azeroth", "Zuul", "The Predator",
+				"Alien Queen" };
+
 		// Display the title
 		game.displayTitle();
-		
+
 		// Display the instructions only for the first time
 		game.displayInstructions();
-		
+
 		// Here the main game loop starts
-		
+
 		// TODO: create game loop
-		
+
 		// Get User menu choice
 		int choice = game.handleMainMenu(in);
 		// evaluate the menu choices
 		switch (choice) {
-		
-		
-		
+
 		}
-		
-		
-		
-		
+
 		// Last command in the program, close the Scanner to
 		// avoid a resource leak
 		in.close();
-		
+
 	}
 
 	private void displayInstructions() {
@@ -72,7 +68,7 @@ public class MonsterGame {
 		System.out.println("\t***                                     ***");
 		System.out.println("\t***                                     ***");
 		System.out.println("\t*******************************************");
-		
+
 	}
 
 	private void displayTitle() {
@@ -87,12 +83,29 @@ public class MonsterGame {
 	}
 
 	private int handleMainMenu(Scanner in) {
-		
-		
-		return 0;
+		System.out.println("\t*******************************************");
+		System.out.println("\t***                                     ***");
+		System.out.println("\t***            MAIN MENU                ***");
+		System.out.println("\t***                                     ***");
+		System.out.println("\t***     (1)   Attack Monster            ***");
+		System.out.println("\t***     (2)   Drink Health Potion       ***");
+		System.out.println("\t***     (3)   Run Away                  ***");
+		System.out.println("\t***     (4)   Quit Game                 ***");
+		System.out.println("\t***                                     ***");
+		System.out.println("\t*******************************************");
+		System.out.println();
+
+		// Menu Loop
+		int choice;
+		do {
+			System.out.print("Please choose your action (1..4): ");
+			choice = in.nextInt();
+			if ((choice < 1) || (choice > 4)) {
+				System.out.println("Invalid choice!");
+				System.out.println();
+			}
+		} while ((choice < 1) || (choice > 4));
+		return choice;
 	}
-	
-	
-	
-	
+
 }
