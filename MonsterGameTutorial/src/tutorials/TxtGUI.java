@@ -125,6 +125,11 @@ public class TxtGUI {
 		
 	}
 
+	public void displayReceivePotion(Player player, Monster monster, int potions) {
+		// TODO displayReceivePotion Auto-generated method stub
+		
+	}
+
 	
 	
 }

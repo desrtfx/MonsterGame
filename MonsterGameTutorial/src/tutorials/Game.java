@@ -86,7 +86,7 @@ public class Game {
 
 				// Menu choices handled, display some statistics
 				gui.displayStats(player, monster);
-				
+
 				// Here is the end of the inner game loop
 				// the inner game loop runs until a monster is killed
 
@@ -100,6 +100,12 @@ public class Game {
 												// monster is dead
 				if (monster.isDead()) { // Monster is dead, display some info
 					player.addKills(1); // Increment the player kills
+					// The monster could drop a health potion
+					int potions = monster.dropPotion();
+					if (potions > 0) {
+						gui.displayReceivePotion(player, monster, potions);
+						player.addHealthPotions(potions);
+					}
 					gui.displayMonsterKill(player, monster);
 				}
 				// no else here, because both, player and monster can die in the
