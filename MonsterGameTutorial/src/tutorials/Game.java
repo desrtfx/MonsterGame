@@ -56,13 +56,14 @@ public class Game {
 					int damagePlayer = player.attack();
 					int damageMonster = monster.attack();
 
+					// apply the damage to player and Monster
+					player.receiveDamage(damageMonster);
+					monster.receiveDamage(damagePlayer);
+
 					// display the statistics
 					gui.displayFight(player, monster, damagePlayer,
 							damageMonster);
 
-					// apply the damage to player and Monster
-					player.receiveDamage(damageMonster);
-					monster.receiveDamage(damagePlayer);
 					break;
 				}
 				case 2: { // Player drinks health potion
@@ -100,13 +101,14 @@ public class Game {
 												// monster is dead
 				if (monster.isDead()) { // Monster is dead, display some info
 					player.addKills(1); // Increment the player kills
+					gui.displayMonsterKill(player, monster);
+
 					// The monster could drop a health potion
 					int potions = monster.dropPotion();
 					if (potions > 0) {
-						gui.displayReceivePotion(player, monster, potions);
 						player.addHealthPotions(potions);
+						gui.displayReceivePotion(player, monster, potions);
 					}
-					gui.displayMonsterKill(player, monster);
 				}
 				// no else here, because both, player and monster can die in the
 				// same round
