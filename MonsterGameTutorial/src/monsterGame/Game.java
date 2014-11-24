@@ -25,18 +25,12 @@ public class Game {
 
 	}
 
-	public void resurrect() {
-		player.setHealth(Player.MAX_PLAYER_HEALTH);
-	}
 
 	public void play() {
 
 		// When the game loop starts, create a new Player
 		player = new Player();
 
-		// Helper variable to terminate the monster-fight
-		// loop upon player run away
-		boolean runaway = false;
 
 		do { // Outer Game loop
 
@@ -46,8 +40,7 @@ public class Game {
 			// Now that we have a monster, we should display the monster
 			gui.displayNewMonster(monster);
 
-			// set a variable for running away
-			runaway = false;
+
 
 			// Start the inner game loop - until the player or monster is killed
 			do {
