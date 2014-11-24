@@ -18,7 +18,7 @@ public class TxtGUI {
 		in = new Scanner(System.in);
 	}
 
-
+	// Menu methods
 
 	// Display and handle Main menu
 	// return value = menu choice
@@ -39,6 +39,7 @@ public class TxtGUI {
 		return (choice == 2);
 	}
 
+	// Display the title
 	public void displayTitle() {
 		printHeader();
 		printLine("Monster Battle", Align.CENTER);
@@ -48,6 +49,7 @@ public class TxtGUI {
 		printFooter();
 	}
 
+	// Display the instructions
 	public void displayInstructions() {
 		printHeader();
 		printLine("I N S T R U C T I O N S", Align.CENTER);
@@ -77,6 +79,7 @@ public class TxtGUI {
 		printFooter();
 	}
 	
+	// Display when a new monster apperared
 	public void displayNewMonster(Monster monster) {
 		printHeader();
 		printLine("MASTER!", Align.LEFT);
@@ -86,7 +89,8 @@ public class TxtGUI {
 		printLine("Health: " + monster.getHealth(), Align.LEFT);
 		printFooter();
 	}
-
+	
+	// Display the outcome of a fight
 	public void displayFight(Monster monster, int damagePlayer,
 			int damageMonster) {
 		printHeader();
@@ -98,6 +102,8 @@ public class TxtGUI {
 		printFooter();
 	}
 
+	// Display the result of drinking a health potion
+	// success determines whether potion was drunk or not
 	public void displayHealthPotion(Player player, boolean success) {
 		if (success) {
 			printHeader();
@@ -124,6 +130,7 @@ public class TxtGUI {
 
 	}
 
+	// Display when running away from a monster
 	public void displayRunAway(Monster monster) {
 		printHeader();
 		printLine("In a cowardish move you", Align.LEFT);
@@ -132,11 +139,13 @@ public class TxtGUI {
 		printFooter();
 	}
 
+	// Display the End game message
 	public void displayEndMessage(Player player) {
 		// TODO displayEndMessage Auto-generated method stub
 
 	}
 
+	// Display when player killed a monster
 	public void displayMonsterKill(Player player, Monster monster) {
 		printHeader();
 		printLine("C O N G R A T U L A T I O N S !", Align.CENTER);
@@ -154,6 +163,7 @@ public class TxtGUI {
 
 	}
 
+	// Display when player was killed by a monster
 	public void displayPlayerKill(Player player, Monster monster) {
 		printHeader();
 		printLine("O H   N O!", Align.CENTER);
@@ -173,6 +183,7 @@ public class TxtGUI {
 		printFooter();
 	}
 
+	// Display the statistics at the end of each round
 	public void displayStats(Player player, Monster monster) {
 		printHeader();
 		printLine("S T A T I S T I C S", Align.CENTER);
@@ -188,6 +199,7 @@ public class TxtGUI {
 		printFooter();
 	}
 
+	// Display when a monster dropped a potion
 	public void displayReceivePotion(Player player, Monster monster, int potions) {
 		printHeader();
 		printLine("Upon death, " + monster.getName(), Align.LEFT);
@@ -206,25 +218,32 @@ public class TxtGUI {
 		printFooter();
 	}
 
+	// Auxiliary Methods
+	
+	// Print a section line
 	private void printSection() {
 		System.out.println("\t*******************************************");
 	}
 
+	// Print a separator line
 	private void printSeparator() {
 		System.out.println("\t***                                     ***");
 	}
 
+	// Print the header (Section line + Separator line)
 	private void printHeader() {
 		printSection();
 		printSeparator();
 	}
 
+	// Print the Footer (Separator line + Section line + empty line)
 	private void printFooter() {
 		printSeparator();
 		printSection();
 		System.out.println();
 	}
 
+	// Print a formatted line aligned by align
 	private void printLine(String text, Align align) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\t***  ");
@@ -249,6 +268,8 @@ public class TxtGUI {
 		System.out.println(sb.toString());
 	}
 
+	// Print and handle menu choices
+	// return value is the chosen menu item
 	private int doMenu(String title, String[] items) {
 		printHeader();
 		printLine(title, Align.CENTER);

@@ -165,7 +165,7 @@ public class Game {
 	// TODO: Change MonsterDeath code
 	private void checkMonsterDeath() {
 		if (monster.isDead()) { // Monster is dead, display some info
-			player.addKills(1); // Increment the player kills
+			player.incKills(); // Increment the player kills
 			gui.displayMonsterKill(player, monster);
 
 			// The monster could drop a health potion

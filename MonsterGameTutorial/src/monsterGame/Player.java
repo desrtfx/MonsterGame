@@ -14,6 +14,12 @@ public class Player extends AbstractBeing {
 
 	// Maximum number of health potions that a player can hold
 	private static final int MAX_HEALTH_POTIONS = 5;
+	
+	// Maximum player resurrection allowed
+	private static final int MAX_PLAYER_RESURRECTION = 3;
+	
+	// Player gets new Resurrection chance every x kills
+	private static final int NEW_LIFE_EVERY = 10;
 
 	// Player defaults
 	// Initial number of Health Potions
@@ -22,6 +28,8 @@ public class Player extends AbstractBeing {
 	// Initial number of kills
 	private int kills = 0;
 	
+	private int resurrectionCount = 0;
+	
 	private boolean runaway = false;
 	
 	private boolean quit = false;
@@ -29,6 +37,7 @@ public class Player extends AbstractBeing {
 	// Default Player starts with maximum health
 	public Player() {
 		super(MAX_PLAYER_HEALTH);
+		resurrectionCount = 0;
 	}
 
 	// initialise a player with a set health less than max health
@@ -36,6 +45,15 @@ public class Player extends AbstractBeing {
 		super((health <= MAX_PLAYER_HEALTH) ? health : MAX_PLAYER_HEALTH);
 	}
 
+	public boolean resurrect() {
+		resurrectionCount++;
+		if (resurrectionCount<=MAX_PLAYER_RESURRECTION) {
+			health = MAX_PLAYER_HEALTH;
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean hasRunaway() {
 		return runaway;
 	}
@@ -61,11 +79,20 @@ public class Player extends AbstractBeing {
 		}
 	}
 
-	// increment the kill counter by amount
-	public void addKills(int amount) {
-		kills += amount;
+	public void incKills() {
+		kills++;
+		adjustResurrectionCount();
 	}
-
+	
+	private void adjustResurrectionCount() {
+		if(kills % NEW_LIFE_EVERY == 0) {
+			if(resurrectionCount > 0) {
+				resurrectionCount--;
+			}
+		}
+		
+	}
+	
 	// return the kill counter
 	public int getKills() {
 		return kills;
