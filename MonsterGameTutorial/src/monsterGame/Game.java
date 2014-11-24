@@ -65,12 +65,14 @@ public class Game {
 				}
 				case 3: { // Player runs away
 					// set the runaway flag
-					runaway = true;
+					runAway();
 					break;
 				}
 				case 4: { // Player quits
+					// TODO: Quit handling needs changing
 					gui.displayEndMessage(player);
 					if (!gui.handleKeepPlayingMenu()) {
+						player.doQuit();
 						return;
 					}
 					break;
@@ -90,12 +92,15 @@ public class Game {
 				// the inner game loop runs until a monster is killed
 				// or until the player is dead
 				// or until the player runs away or quits
+				// TODO: Revise inner loop conditions
+			} while ((!player.hasRunaway()) && (!monster.isDead()) && (!player.isDead()));
 
-			} while ((!runaway) && (!monster.isDead()) && (!player.isDead()));
+			// TODO: Rewrite loop end of inner loop
 
+			
 			// Either the player quit, or the monster is dead, or the player is
 			// dead, or the player ran away
-			if (!runaway) { // If the player didn't quit, nor
+			if (!player.hasRunaway()) { // If the player didn't quit, nor
 							// ran away, either player or
 							// monster is dead
 				// Check if the player killed the monster
@@ -105,20 +110,59 @@ public class Game {
 				// Check if the monster killed the player
 				checkPlayerDeath(monster);
 			}
-			if (runaway) {
+			// TODO: Runaway handling needs changing
+			//if (runaway) {
 				// Player ran away, we need a new monster and display some text
-				gui.displayRunAway(player, monster);
-			}
+				//gui.displayRunAway(monster);
+			//}
 		} while (!player.isDead()); // End Outer Game loop
 		// TODO: Handle Player Death
 	}
 
+	// Game menu choice handlers
+	
+	// Handle the monster fight
+	private void fightMonster() {
+		// Determine the amount of damage done
+		int damagePlayer = player.attack();
+		int damageMonster = monster.attack();
+
+		// apply the damage to player and Monster
+		player.receiveDamage(damageMonster);
+		monster.receiveDamage(damagePlayer);
+
+		// display the statistics
+		gui.displayFight(monster, damagePlayer, damageMonster);
+	}
+
+	// Drink a health potion
+	private void drinkPotion() {
+		boolean success = player.drinkHealthPotion();
+		gui.displayHealthPotion(player, success);
+	}
+
+	// Run away handler
+	private void runAway() {
+		player.doRunaway();
+		gui.displayRunAway(monster);
+	}
+	
+	// Quit handler
+	// TODO: Implement quit handler
+
+	// Auxiliary Functions
+
+	// Check if the player died
+	// TODO: Change PlayerDeath code
 	private void checkPlayerDeath(Monster monster) {
 		if (player.isDead()) { // Player is dead, display some info
 			gui.displayPlayerKill(player, monster);
 		}
 	}
 
+	
+	// Check if the monster died
+	// TODO: Change MonsterDeath code
 	private void checkMonsterDeath(Monster monster) {
 		if (monster.isDead()) { // Monster is dead, display some info
 			player.addKills(1); // Increment the player kills
@@ -138,26 +182,6 @@ public class Game {
 		String name = enemies[rnd.nextInt(enemies.length)];
 		Monster monster = new Monster(name);
 		return monster;
-	}
-
-	// Handle the monster fight
-	private void fightMonster() {
-		// Determine the amount of damage done
-		int damagePlayer = player.attack();
-		int damageMonster = monster.attack();
-
-		// apply the damage to player and Monster
-		player.receiveDamage(damageMonster);
-		monster.receiveDamage(damagePlayer);
-
-		// display the statistics
-		gui.displayFight(monster, damagePlayer, damageMonster);
-	}
-
-	// Drink a health potion
-	private void drinkPotion() {
-		boolean success = player.drinkHealthPotion();
-		gui.displayHealthPotion(player, success);
 	}
 
 }

@@ -21,6 +21,10 @@ public class Player extends AbstractBeing {
 
 	// Initial number of kills
 	private int kills = 0;
+	
+	private boolean runaway = false;
+	
+	private boolean quit = false;
 
 	// Default Player starts with maximum health
 	public Player() {
@@ -30,6 +34,22 @@ public class Player extends AbstractBeing {
 	// initialise a player with a set health less than max health
 	public Player(int health) {
 		super((health <= MAX_PLAYER_HEALTH) ? health : MAX_PLAYER_HEALTH);
+	}
+
+	public boolean hasRunaway() {
+		return runaway;
+	}
+
+	public void doRunaway() {
+		this.runaway = true;
+	}
+
+	public boolean hasQuit() {
+		return quit;
+	}
+
+	public void doQuit() {
+		this.quit = true;
 	}
 
 	// add amount health potions up to the maximum

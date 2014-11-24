@@ -124,7 +124,7 @@ public class TxtGUI {
 
 	}
 
-	public void displayRunAway(Player player, Monster monster) {
+	public void displayRunAway(Monster monster) {
 		printHeader();
 		printLine("In a cowardish move you", Align.LEFT);
 		printLine("dash away from:", Align.LEFT);
