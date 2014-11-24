@@ -18,6 +18,27 @@ public class TxtGUI {
 		in = new Scanner(System.in);
 	}
 
+
+
+	// Display and handle Main menu
+	// return value = menu choice
+	public int handleMainMenu() {
+		String title = "What do you want to do?";
+		String[] items = { "Attack Monster", "Drink Health Potion", "Run Away",
+				"Quit Game" };
+		int choice = doMenu(title, items);
+		return choice;
+	}
+
+	// Display a menu to ask user if they want to
+	// keep playing. Return TRUE if keep playing
+	public boolean handleKeepPlayingMenu() {
+		String title = "Do you really want to Quit?";
+		String[] items = { "Yes, get me out!", "No, I'll stay." };
+		int choice = doMenu(title, items);
+		return (choice == 2);
+	}
+
 	public void displayTitle() {
 		printHeader();
 		printLine("Monster Battle", Align.CENTER);
@@ -54,32 +75,8 @@ public class TxtGUI {
 		printLine("Monsters sometimes drop Health", Align.LEFT);
 		printLine("Potions when they are killed.", Align.LEFT);
 		printFooter();
-
 	}
-
-	public int handleMainMenu() {
-		printHeader();
-		printLine("What do you want to do?", Align.CENTER);
-		printSeparator();
-		printLine("    (1)   Attack Monster", Align.LEFT);
-		printLine("    (2)   Drink Health Potion", Align.LEFT);
-		printLine("    (3)   Run Away", Align.LEFT);
-		printLine("    (4)   Quit Game", Align.LEFT);
-		printFooter();
-
-		// Menu Loop
-		int choice;
-		do {
-			System.out.print("Please choose your action (1..4): ");
-			choice = in.nextInt();
-			if ((choice < 1) || (choice > 4)) {
-				System.out.println("Invalid choice!");
-				System.out.println();
-			}
-		} while ((choice < 1) || (choice > 4));
-		return choice;
-	}
-
+	
 	public void displayNewMonster(Monster monster) {
 		printHeader();
 		printLine("MASTER!", Align.LEFT);
@@ -90,10 +87,15 @@ public class TxtGUI {
 		printFooter();
 	}
 
-	public void displayFight(Player player, Monster monster, int damagePlayer,
+	public void displayFight(Monster monster, int damagePlayer,
 			int damageMonster) {
-		// TODO displayFight Auto-generated method stub
-
+		printHeader();
+		printLine("You attack " + monster.getName() + ".", Align.LEFT);
+		printLine("You deal " + damagePlayer + " Points damage.", Align.LEFT);
+		printSeparator();
+		printLine("In return, you receive", Align.LEFT);
+		printLine("" + damageMonster + " Points damage.", Align.LEFT);
+		printFooter();
 	}
 
 	public void displayHealthPotion(Player player, boolean success) {
@@ -143,9 +145,9 @@ public class TxtGUI {
 		printLine(monster.getName(), Align.CENTER);
 		printSeparator();
 		printLine("So far you have killed ", Align.LEFT);
-		String monsterKills = ((player.getKills() == 0) ? "no monsters." : (player
-				.getKills() == 1) ? "1 monster." : "" + player.getKills()
-				+ " monsters.");
+		String monsterKills = ((player.getKills() == 0) ? "no monsters."
+				: (player.getKills() == 1) ? "1 monster." : ""
+						+ player.getKills() + " monsters.");
 
 		printLine(monsterKills, Align.LEFT);
 		printFooter();
@@ -156,24 +158,34 @@ public class TxtGUI {
 		printHeader();
 		printLine("O H   N O!", Align.CENTER);
 		printSeparator();
-		printLine(monster.getName(),Align.CENTER);
+		printLine(monster.getName(), Align.CENTER);
 		printLine("killed you!", Align.LEFT);
 		printSeparator();
 		printHeader();
 		printLine("FINAL STATISTICS", Align.CENTER);
 		printSeparator();
 		printLine("You have killed ", Align.LEFT);
-		String monsterKills = ((player.getKills() == 0) ? "no monsters." : (player
-				.getKills() == 1) ? "1 monster." : "" + player.getKills()
-				+ " monsters.");
+		String monsterKills = ((player.getKills() == 0) ? "no monsters."
+				: (player.getKills() == 1) ? "1 monster." : ""
+						+ player.getKills() + " monsters.");
 
 		printLine(monsterKills, Align.LEFT);
 		printFooter();
 	}
 
 	public void displayStats(Player player, Monster monster) {
-		// TODO displayStats Auto-generated method stub
-
+		printHeader();
+		printLine("S T A T I S T I C S", Align.CENTER);
+		printSeparator();
+		printLine("You currently have:", Align.LEFT);
+		printLine("" + player.getHealth() + " health points left", Align.LEFT);
+		printLine("and " + player.getHealthPotions() + " health potions.",
+				Align.LEFT);
+		printSeparator();
+		printLine(monster.getName(), Align.LEFT);
+		printLine(" has " + monster.getHealth() + " health points left.",
+				Align.LEFT);
+		printFooter();
 	}
 
 	public void displayReceivePotion(Player player, Monster monster, int potions) {
@@ -181,9 +193,8 @@ public class TxtGUI {
 		printLine("Upon death, " + monster.getName(), Align.LEFT);
 		String strPotions = "left you "
 				+ ((potions == 0) ? "no Health Potions"
-						: (potions == 1) ? "1 Health Potion"
-								: "" + potions
-										+ " Health Potions");
+						: (potions == 1) ? "1 Health Potion" : "" + potions
+								+ " Health Potions");
 		printLine(strPotions, Align.LEFT);
 		printSeparator();
 		strPotions = "You now have "
@@ -237,4 +248,28 @@ public class TxtGUI {
 		sb.append("  ***");
 		System.out.println(sb.toString());
 	}
+
+	private int doMenu(String title, String[] items) {
+		printHeader();
+		printLine(title, Align.CENTER);
+		printSeparator();
+		for (int i = 0; i < items.length; i++) {
+			printLine("    (" + (i + 1) + ")   " + items[i], Align.LEFT);
+		}
+		printFooter();
+
+		// Menu Loop
+		int choice;
+		do {
+			System.out.print("Please choose your action (1.." + items.length
+					+ "): ");
+			choice = in.nextInt();
+			if ((choice < 1) || (choice > items.length)) {
+				System.out.println("Invalid choice!");
+				System.out.println();
+			}
+		} while ((choice < 1) || (choice > items.length));
+		return choice;
+	}
+
 }

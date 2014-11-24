@@ -14,7 +14,7 @@ public class Monster extends AbstractBeing {
 	private static final int MAX_MONSTER_ATTACK_DAMAGE = 25;
 
 	// Drop chance for Health Potions in percent
-	private static final int HEALTH_POTION_DROP_CHANCE = 50; // Percentage
+	private static final int HEALTH_POTION_DROP_CHANCE = 50; 
 
 	// Maximum number of Health Potions dropped
 	private static final int MAX_NO_HEALTH_POTION_DROP = 4;
