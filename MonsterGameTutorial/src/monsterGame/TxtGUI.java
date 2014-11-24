@@ -1,16 +1,20 @@
-package tutorials;
+package monsterGame;
 
 import java.util.Scanner;
 
 public class TxtGUI {
 
+	// Keyboard scanner
 	private Scanner in;
 
+	// Enum for the text alignments in the output
 	private enum Align {
 		LEFT, CENTER, RIGHT
 	}
 
-	TxtGUI() {
+	// Default constructor
+	// create a new Scanner to be used
+	public TxtGUI() {
 		in = new Scanner(System.in);
 	}
 
@@ -210,7 +214,7 @@ public class TxtGUI {
 		System.out.println();
 	}
 
-	private String format(String text, Align align) {
+	private void printLine(String text, Align align) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\t***  ");
 		switch (align) {
@@ -231,10 +235,6 @@ public class TxtGUI {
 		}
 		}
 		sb.append("  ***");
-		return sb.toString();
-	}
-
-	private void printLine(String text, Align align) {
-		System.out.println(format(text, align));
+		System.out.println(sb.toString());
 	}
 }
