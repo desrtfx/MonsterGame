@@ -105,10 +105,10 @@ public class Game {
 							// monster is dead
 				// Check if the player killed the monster
 				// and handle monster drops
-				checkMonsterDeath(monster);
+				checkMonsterDeath();
 
 				// Check if the monster killed the player
-				checkPlayerDeath(monster);
+				checkPlayerDeath();
 			}
 			// TODO: Runaway handling needs changing
 			//if (runaway) {
@@ -154,7 +154,7 @@ public class Game {
 
 	// Check if the player died
 	// TODO: Change PlayerDeath code
-	private void checkPlayerDeath(Monster monster) {
+	private void checkPlayerDeath() {
 		if (player.isDead()) { // Player is dead, display some info
 			gui.displayPlayerKill(player, monster);
 		}
@@ -163,7 +163,7 @@ public class Game {
 	
 	// Check if the monster died
 	// TODO: Change MonsterDeath code
-	private void checkMonsterDeath(Monster monster) {
+	private void checkMonsterDeath() {
 		if (monster.isDead()) { // Monster is dead, display some info
 			player.addKills(1); // Increment the player kills
 			gui.displayMonsterKill(player, monster);
