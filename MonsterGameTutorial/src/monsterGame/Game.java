@@ -3,31 +3,36 @@ package monsterGame;
 import java.util.Random;
 
 public class Game {
-	
+
 	// Chance in percent that a monster attacks a fleeing player
 	private static final int MONSTER_ATTACK_CHANCE = 30;
-	
+
+	// Internal variables
 	Player player;
 	TxtGUI gui;
 	Random rnd;
 	Monster monster;
-	boolean keepPlaying = true;
 
 	// names of the Monsters
 	String[] enemies = { "Count Dooku", "Azok", "Zuul", "The Predator",
 			"Alien Queen" };
 
+	// Upon Game creation
+	// create a new Text GUI for the displays
+	// and create a random generator
 	public Game() {
 		gui = new TxtGUI();
 		rnd = new Random();
 	}
 
+	// display the title and instructions
 	public void init() {
 		gui.displayTitle();
 		gui.displayInstructions();
 
 	}
 
+	// the actual Gameplay
 	public void play() {
 
 		// When the game loop starts, create a new Player
@@ -53,24 +58,10 @@ public class Game {
 			// All Objects created, enter the inner loop
 			doInnerGameLoop();
 
-			// The inner game loop has ended.
-			// This could be because
-			// - the player killed the monster
-			// + new monster needed
-			// + stay in the main loop
-			// - the player ran away
-			// + new monster needed
-			// + stay in the main loop
-			// - the monster killed the player
-			// + resurrect the player if possible & wanted
-			// + stay in the main loop
-			// - the player quit
-			// + exit the main loop
-
 			// Either the player quit, or the monster is dead, or the player is
 			// dead, or the player ran away
-			if ((!player.hasQuit()) && (!player.hasRunAway())) { 
-				
+			if ((!player.hasQuit()) && (!player.hasRunAway())) {
+
 				// Check if the player killed the monster
 				// and handle monster drops
 				if (monster.isDead()) {
@@ -83,25 +74,24 @@ public class Game {
 					playerIsDead();
 				}
 			}
-			
-		    // Outer game loop runs until the player quits
-			// Even if the player dies.
-			// If the player dies and does not resurrect
-			// hasQuit will be set.
+
+			// Outer game loop runs until the player quits
 		} while (!player.hasQuit()); // End Outer Game loop
-		
+
+		// Display the final statistics and end message
 		gui.displayEndMessage();
-		
+
 	}
 
+	// The inner game loop
 	private void doInnerGameLoop() {
-		// Start the inner game loop - until the player or monster is killed
 		do {
 			// Produce and handle the main menu
 			doMainMenu();
 
 			// Menu choices handled, display some statistics
-			if(!player.hasQuit()) {
+			// omit the statistics if the player has quit
+			if (!player.hasQuit()) {
 				gui.displayStats();
 			}
 
@@ -141,6 +131,7 @@ public class Game {
 	}
 
 	// Game menu choice handlers
+	// The following methods handle the actions chosen in the main in-game menu
 
 	// Handle the monster fight
 	private void fightMonster() {
@@ -152,7 +143,7 @@ public class Game {
 		player.receiveDamage(damageMonster);
 		monster.receiveDamage(damagePlayer);
 
-		// display the statistics
+		// display fight results
 		gui.displayFight(damagePlayer, damageMonster);
 	}
 
@@ -167,7 +158,7 @@ public class Game {
 		player.setRunAway();
 		int damageMonster = 0;
 		if (rnd.nextInt(100) < MONSTER_ATTACK_CHANCE) {
-				damageMonster = monster.attack();
+			damageMonster = monster.attack();
 		}
 		gui.displayRunAway(damageMonster);
 		player.receiveDamage(damageMonster);
@@ -181,41 +172,51 @@ public class Game {
 	}
 
 	// Auxiliary Functions
+	// Game methods that were not initiated by a menu choice
 
-	// Check if the player died
+	// Handle the player death
 	private void playerIsDead() {
+		// increment the death count
 		player.incDeathCount();
+		// display the player is dead message
 		gui.displayPlayerKill();
+		// See if the player can be resurrected
 		if (player.canResurrect()) {
+			// Display the resurrection dialog
 			gui.displayResurrection();
-			if(gui.handleResurrectionMenu()) {
+			// Ask the player if they want to continue playing
+			if (gui.handleResurrectionMenu()) {
 				player.resurrect();
-			} 
-			else {
+			} else {
 				player.setQuit();
 			}
 		}
 	}
 
-	// Check if the monster died
+	// Handle a monster death
 	private void monsterIsDead() {
-		if (monster.isDead()) { // Monster is dead, display some info
-			player.incKills(); // Increment the player kills
-			gui.displayMonsterKill();
+		// Increment the player kills
+		player.incKills(); 
+		// Display the monster killed dialog
+		gui.displayMonsterKill();
 
-			// The monster could drop a health potion
-			int potions = monster.dropPotion();
-			if (potions > 0) {
-				player.addHealthPotions(potions);
-				gui.displayReceivePotion(potions);
-			}
+		// The monster could drop a health potion
+		int potions = monster.dropPotion();
+		if (potions > 0) {
+			// Give the player the dropped potions
+			player.addHealthPotions(potions);
+			// Display a dialog
+			gui.displayReceivePotion(potions);
 		}
 	}
 
 	// Create a new monster to fight
 	private Monster getNewMonster() {
+		// find a random enemy
 		String name = enemies[rnd.nextInt(enemies.length)];
+		// create a new monster
 		Monster monster = new Monster(name);
+		// return the new monster
 		return monster;
 	}
 

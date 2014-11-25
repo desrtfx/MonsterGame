@@ -2,6 +2,11 @@ package monsterGame;
 
 import java.util.Random;
 
+// The AbstractBeing class holds all basic information about 
+// a being (Player or monster)
+// Player and Monster are subclasses from AbstractBeing
+// This avoids duplicate programming
+
 public abstract class AbstractBeing {
 
 	// Health of the being. Health = 0 ==> Being is dead

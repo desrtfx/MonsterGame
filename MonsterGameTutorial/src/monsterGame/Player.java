@@ -1,5 +1,8 @@
 package monsterGame;
 
+
+// The player class represents the human player
+// it is a subclass from AbstractBeing
 public class Player extends AbstractBeing {
 
 	// Player related constants
@@ -28,13 +31,16 @@ public class Player extends AbstractBeing {
 	// Initial number of kills
 	private int kills = 0;
 
+	// Counter how many times the player died
 	private int deathCount = 0;
 	
+	// Counter how many health potions the player consumed
 	private int healthPotionCount = 0;
 	
-	// Count how many times the player was resurrected
+	// Counter how many times the player was resurrected
 	private int resurrectionCount = 0;
 	
+	// Counter how many times the player ran away
 	private int runawayCount = 0;
 
 	// Flag that indicates that the player ran away
@@ -55,43 +61,45 @@ public class Player extends AbstractBeing {
 		super((health <= MAX_PLAYER_HEALTH) ? health : MAX_PLAYER_HEALTH);
 	}
 
-	public boolean resurrect() {
+	// Bring the player back from the dead if possible
+	public void resurrect() {
 		resurrectionCount++;
-		if (resurrectionCount <= MAX_PLAYER_RESURRECTION) {
 			health = MAX_PLAYER_HEALTH;
 			runawayCount = 0;
-			return true;
-		}
-		return false;
 	}
 	
+	// Can the player be resurrected?
 	public boolean canResurrect() {
 		return (resurrectionCount < MAX_PLAYER_RESURRECTION);
 	}
-	
 
-
+	// Has the player run away?
 	public boolean hasRunAway() {
 		return runaway;
 	}
 
+	// The player runs away
 	public void setRunAway() {
 		runawayCount++;
 		this.runaway = true;
 	}
 
+	// reset runaway flag (used when a new monster appears)
 	public void resetRunAway() {
 		this.runaway = false;
 	}
 
+	// Has the player quit?
 	public boolean hasQuit() {
 		return quit;
 	}
 
+	// The player wants to quit
 	public void setQuit() {
 		this.quit = true;
 	}
 
+	// The player does not want to quit
 	public void resetQuit() {
 		this.quit = false;
 	}
@@ -105,11 +113,15 @@ public class Player extends AbstractBeing {
 		}
 	}
 
+	// increment the player kill counter
+	// and adjust the resurrection counter
 	public void incKills() {
 		kills++;
 		adjustResurrectionCount();
 	}
 
+	// every x kills, the player gets an extra life
+	// if they have been resurrected before
 	private void adjustResurrectionCount() {
 		if (kills % NEW_LIFE_EVERY == 0) {
 			if (resurrectionCount > 0) {
@@ -119,17 +131,22 @@ public class Player extends AbstractBeing {
 
 	}
 	
+	// increment the death counter
 	public void incDeathCount() {
 		deathCount++;
 	}
+	
+	// return the death counter
 	public int getDeathCount() {
 		return deathCount;
 	}
 	
+	// return the consumed health potion count
 	public int getHealthPotionCount() {
 		return healthPotionCount;
 	}
 	
+	// return the runaway count
 	public int getRunawayCount() {
 		return runawayCount;
 	}

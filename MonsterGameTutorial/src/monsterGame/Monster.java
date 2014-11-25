@@ -1,5 +1,7 @@
 package monsterGame;
 
+// The monster class represents the monsters to fight
+// it is a subclass from AbstractBeing
 public class Monster extends AbstractBeing {
 
 	// Monster related constants

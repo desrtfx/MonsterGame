@@ -52,6 +52,8 @@ public class TxtGUI {
 		return (choice == 2);
 	}
 
+	// Display a menu to ask the user if they want to
+	// be resurrected or not. Return true if they want to.
 	public boolean handleResurrectionMenu() {
 		String title = "Do you want to respawn?";
 		String[] items = { "Yes, I want to live!", "No, I'd rather die." };
@@ -250,6 +252,8 @@ public class TxtGUI {
 		printFooter();
 	}
 
+	
+	// display a resurrection message
 	public void displayResurrection() {
 		printHeader();
 		printLine("R E J O I C E !", Align.CENTER);
