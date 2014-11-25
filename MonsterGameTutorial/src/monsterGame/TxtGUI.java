@@ -6,11 +6,26 @@ public class TxtGUI {
 
 	// Keyboard scanner
 	private Scanner in;
+	
+	// Variables to hold the Player and Monster Objects
+	private Monster monster;
+	private Player player;
 
 	// Enum for the text alignments in the output
 	private enum Align {
 		LEFT, CENTER, RIGHT
 	}
+	
+	// Setters for Monster and Player Objects
+	public void setMonster(Monster monster) {
+		this.monster = monster;
+	}
+	
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	
+	
 
 	// Default constructor
 	// create a new Scanner to be used
@@ -80,7 +95,7 @@ public class TxtGUI {
 	}
 	
 	// Display when a new monster apperared
-	public void displayNewMonster(Monster monster) {
+	public void displayNewMonster() {
 		printHeader();
 		printLine("MASTER!", Align.LEFT);
 		printLine("A new monster has appeared!", Align.LEFT);
@@ -91,7 +106,7 @@ public class TxtGUI {
 	}
 	
 	// Display the outcome of a fight
-	public void displayFight(Monster monster, int damagePlayer,
+	public void displayFight(int damagePlayer,
 			int damageMonster) {
 		printHeader();
 		printLine("You attack " + monster.getName() + ".", Align.LEFT);
@@ -104,7 +119,7 @@ public class TxtGUI {
 
 	// Display the result of drinking a health potion
 	// success determines whether potion was drunk or not
-	public void displayHealthPotion(Player player, boolean success) {
+	public void displayHealthPotion(boolean success) {
 		if (success) {
 			printHeader();
 			printLine("You drank a health potion.", Align.LEFT);
@@ -131,22 +146,40 @@ public class TxtGUI {
 	}
 
 	// Display when running away from a monster
-	public void displayRunAway(Monster monster) {
+	public void displayRunAway(int damageMonster) {
 		printHeader();
 		printLine("In a cowardish move you", Align.LEFT);
 		printLine("dash away from:", Align.LEFT);
 		printLine(monster.getName(), Align.CENTER);
+		if (damageMonster > 0) {
+			printSeparator();
+			printLine("Just before you could", Align.LEFT);
+			printLine("escape, " + monster.getName(), Align.LEFT);
+			printLine("hit you and caused " , Align.LEFT);
+			printLine("" + damageMonster +" health points damage.", Align.LEFT);
+		}
 		printFooter();
 	}
 
 	// Display the End game message
-	public void displayEndMessage(Player player) {
-		// TODO displayEndMessage Auto-generated method stub
-
+	public void displayEndMessage() {
+		printHeader();
+		printLine("FINAL STATISTICS", Align.CENTER);
+		printLine("You killed: " + player.getKills() + " monsters.", Align.LEFT);
+		printLine("You died:   " + player.getDeathCount() + " times.", Align.LEFT);
+		printLine("Your final health is: " + player.getHealth() + " HP.", Align.LEFT);
+		printLine("You drank: " + player.getHealthPotionCount() + " Health Potions.", Align.LEFT);
+		printSeparator();
+		printHeader();
+		printLine("G O O D B Y E !", Align.CENTER);
+		printSeparator();
+		printLine("May the odds be", Align.CENTER);
+		printLine("ever in your favor!", Align.CENTER);
+		printFooter();
 	}
 
 	// Display when player killed a monster
-	public void displayMonsterKill(Player player, Monster monster) {
+	public void displayMonsterKill() {
 		printHeader();
 		printLine("C O N G R A T U L A T I O N S !", Align.CENTER);
 		printSeparator();
@@ -164,7 +197,7 @@ public class TxtGUI {
 	}
 
 	// Display when player was killed by a monster
-	public void displayPlayerKill(Player player, Monster monster) {
+	public void displayPlayerKill() {
 		printHeader();
 		printLine("O H   N O!", Align.CENTER);
 		printSeparator();
@@ -184,7 +217,7 @@ public class TxtGUI {
 	}
 
 	// Display the statistics at the end of each round
-	public void displayStats(Player player, Monster monster) {
+	public void displayStats() {
 		printHeader();
 		printLine("S T A T I S T I C S", Align.CENTER);
 		printSeparator();
@@ -200,7 +233,7 @@ public class TxtGUI {
 	}
 
 	// Display when a monster dropped a potion
-	public void displayReceivePotion(Player player, Monster monster, int potions) {
+	public void displayReceivePotion(int potions) {
 		printHeader();
 		printLine("Upon death, " + monster.getName(), Align.LEFT);
 		String strPotions = "left you "

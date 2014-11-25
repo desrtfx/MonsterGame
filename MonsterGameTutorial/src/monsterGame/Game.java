@@ -3,7 +3,10 @@ package monsterGame;
 import java.util.Random;
 
 public class Game {
-
+	
+	// Chance in percent that a monster attacks a fleeing player
+	private static final int MONSTER_ATTACK_CHANCE = 30;
+	
 	Player player;
 	TxtGUI gui;
 	Random rnd;
@@ -25,95 +28,122 @@ public class Game {
 
 	}
 
-
 	public void play() {
 
 		// When the game loop starts, create a new Player
 		player = new Player();
 
+		// Hand the player Object to the GUI
+		gui.setPlayer(player);
 
 		do { // Outer Game loop
+
+			// Reset the runaway Flag on a new monster
+			player.resetRunAway();
 
 			// First step in a new game loop is to create a new Monster
 			monster = getNewMonster();
 
+			// Hand the new Monster to the GUI
+			gui.setMonster(monster);
+
 			// Now that we have a monster, we should display the monster
-			gui.displayNewMonster(monster);
+			gui.displayNewMonster();
 
+			// All Objects created, enter the inner loop
+			doInnerGameLoop();
 
+			// The inner game loop has ended.
+			// This could be because
+			// - the player killed the monster
+			// + new monster needed
+			// + stay in the main loop
+			// - the player ran away
+			// + new monster needed
+			// + stay in the main loop
+			// - the monster killed the player
+			// + resurrect the player if possible & wanted
+			// + stay in the main loop
+			// - the player quit
+			// + exit the main loop
 
-			// Start the inner game loop - until the player or monster is killed
-			do {
-				// Let's display the Menu and ask the user what they want to do
-				int choice = gui.handleMainMenu();
-
-				switch (choice) {
-				case 1: { // Player attacks monster
-					fightMonster();
-					break;
-				}
-				case 2: { // Player drinks health potion
-					drinkPotion();
-					break;
-				}
-				case 3: { // Player runs away
-					// set the runaway flag
-					runAway();
-					break;
-				}
-				case 4: { // Player quits
-					// TODO: Quit handling needs changing
-					gui.displayEndMessage(player);
-					if (!gui.handleKeepPlayingMenu()) {
-						player.doQuit();
-						return;
-					}
-					break;
-				}
-				default: { // do nothing
-					// If this code is reached something went seriously wrong
-					// The menu handler should prevent reaching this code
-					break;
-				}
-
-				}
-
-				// Menu choices handled, display some statistics
-				gui.displayStats(player, monster);
-
-				// Here is the end of the inner game loop
-				// the inner game loop runs until a monster is killed
-				// or until the player is dead
-				// or until the player runs away or quits
-				// TODO: Revise inner loop conditions
-			} while ((!player.hasRunaway()) && (!monster.isDead()) && (!player.isDead()));
-
-			// TODO: Rewrite loop end of inner loop
-
-			
 			// Either the player quit, or the monster is dead, or the player is
 			// dead, or the player ran away
-			if (!player.hasRunaway()) { // If the player didn't quit, nor
-							// ran away, either player or
-							// monster is dead
+			if ((!player.hasQuit()) && (!player.hasRunAway())) { 
+				
 				// Check if the player killed the monster
 				// and handle monster drops
-				checkMonsterDeath();
+				if (monster.isDead()) {
+					monsterIsDead();
+				}
 
 				// Check if the monster killed the player
-				checkPlayerDeath();
+				// and handle resurrection
+				if (player.isDead()) {
+					playerIsDead();
+				}
 			}
 			// TODO: Runaway handling needs changing
-			//if (runaway) {
-				// Player ran away, we need a new monster and display some text
-				//gui.displayRunAway(monster);
-			//}
-		} while (!player.isDead()); // End Outer Game loop
+			// if (runaway) {
+			// Player ran away, we need a new monster and display some text
+			// gui.displayRunAway(monster);
+			// }
+			
+			
+		// Outer game loop runs until the player quits
+			// Even if the player dies.
+			// If the player dies and does not resurrect
+			// hasQuit will be set.
+		} while (!player.hasQuit()); // End Outer Game loop
 		// TODO: Handle Player Death
 	}
 
+	private void doInnerGameLoop() {
+		// Start the inner game loop - until the player or monster is killed
+		do {
+			// Produce and handle the main menu
+			doMainMenu();
+
+			// Menu choices handled, display some statistics
+			gui.displayStats();
+
+		} while ((!player.hasQuit()) && (!player.hasRunAway())
+				&& (!monster.isDead()) && (!player.isDead()));
+	}
+
+	// Handle the main in-game menu
+	private void doMainMenu() {
+		// Let's display the Menu and ask the user what they want to do
+		int choice = gui.handleMainMenu();
+
+		switch (choice) {
+		case 1: { // Player attacks monster
+			fightMonster();
+			break;
+		}
+		case 2: { // Player drinks health potion
+			drinkPotion();
+			break;
+		}
+		case 3: { // Player runs away
+			doRunAway();
+			break;
+		}
+		case 4: { // Player quits
+			doQuit();
+			break;
+		}
+		default: { // do nothing
+			// If this code is reached something went seriously wrong
+			// The menu handler should prevent reaching this code
+			throw new UnsupportedOperationException("Invalid menu choice!");
+		}
+
+		}
+	}
+
 	// Game menu choice handlers
-	
+
 	// Handle the monster fight
 	private void fightMonster() {
 		// Determine the amount of damage done
@@ -125,47 +155,52 @@ public class Game {
 		monster.receiveDamage(damagePlayer);
 
 		// display the statistics
-		gui.displayFight(monster, damagePlayer, damageMonster);
+		gui.displayFight(damagePlayer, damageMonster);
 	}
 
 	// Drink a health potion
 	private void drinkPotion() {
 		boolean success = player.drinkHealthPotion();
-		gui.displayHealthPotion(player, success);
+		gui.displayHealthPotion(success);
 	}
 
 	// Run away handler
-	private void runAway() {
-		player.doRunaway();
-		gui.displayRunAway(monster);
+	private void doRunAway() {
+		player.setRunAway();
+		int damageMonster = 0;
+		if (rnd.nextInt(100) < MONSTER_ATTACK_CHANCE) {
+				monster.attack();
+		}
+		gui.displayRunAway(damageMonster);
+		player.receiveDamage(damageMonster);
 	}
-	
+
 	// Quit handler
-	// TODO: Implement quit handler
+	private void doQuit() {
+		if (!gui.handleKeepPlayingMenu()) {
+			player.setQuit();
+		}
+	}
 
 	// Auxiliary Functions
 
 	// Check if the player died
-	// TODO: Change PlayerDeath code
-	private void checkPlayerDeath() {
-		if (player.isDead()) { // Player is dead, display some info
-			gui.displayPlayerKill(player, monster);
-		}
+	private void playerIsDead() {
+		player.incDeathCount();
+		gui.displayPlayerKill();
 	}
 
-	
 	// Check if the monster died
-	// TODO: Change MonsterDeath code
-	private void checkMonsterDeath() {
+	private void monsterIsDead() {
 		if (monster.isDead()) { // Monster is dead, display some info
 			player.incKills(); // Increment the player kills
-			gui.displayMonsterKill(player, monster);
+			gui.displayMonsterKill();
 
 			// The monster could drop a health potion
 			int potions = monster.dropPotion();
 			if (potions > 0) {
 				player.addHealthPotions(potions);
-				gui.displayReceivePotion(player, monster, potions);
+				gui.displayReceivePotion(potions);
 			}
 		}
 	}

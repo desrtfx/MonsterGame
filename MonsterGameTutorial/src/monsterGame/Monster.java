@@ -62,7 +62,7 @@ public class Monster extends AbstractBeing {
 	public int dropPotion() {
 		// If the random number generated is larger than the 
 		// drop chance, at least one health potion is dropped
-		if (rnd.nextInt(100) > HEALTH_POTION_DROP_CHANCE) {
+		if (rnd.nextInt(100) < HEALTH_POTION_DROP_CHANCE) {
 			return rnd.nextInt(MAX_NO_HEALTH_POTION_DROP) + 1;
 		}
 		// no health potions dropped
