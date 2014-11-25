@@ -34,6 +34,8 @@ public class Player extends AbstractBeing {
 	
 	// Count how many times the player was resurrected
 	private int resurrectionCount = 0;
+	
+	private int runawayCount = 0;
 
 	// Flag that indicates that the player ran away
 	private boolean runaway = false;
@@ -45,6 +47,7 @@ public class Player extends AbstractBeing {
 	public Player() {
 		super(MAX_PLAYER_HEALTH);
 		resurrectionCount = 0;
+		runawayCount = 0;
 	}
 
 	// initialise a player with a set health less than max health
@@ -56,6 +59,7 @@ public class Player extends AbstractBeing {
 		resurrectionCount++;
 		if (resurrectionCount <= MAX_PLAYER_RESURRECTION) {
 			health = MAX_PLAYER_HEALTH;
+			runawayCount = 0;
 			return true;
 		}
 		return false;
@@ -72,6 +76,7 @@ public class Player extends AbstractBeing {
 	}
 
 	public void setRunAway() {
+		runawayCount++;
 		this.runaway = true;
 	}
 
@@ -123,6 +128,10 @@ public class Player extends AbstractBeing {
 	
 	public int getHealthPotionCount() {
 		return healthPotionCount;
+	}
+	
+	public int getRunawayCount() {
+		return runawayCount;
 	}
 
 	// return the kill counter

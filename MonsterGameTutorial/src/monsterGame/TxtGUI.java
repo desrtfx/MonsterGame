@@ -6,7 +6,7 @@ public class TxtGUI {
 
 	// Keyboard scanner
 	private Scanner in;
-	
+
 	// Variables to hold the Player and Monster Objects
 	private Monster monster;
 	private Player player;
@@ -15,17 +15,15 @@ public class TxtGUI {
 	private enum Align {
 		LEFT, CENTER, RIGHT
 	}
-	
+
 	// Setters for Monster and Player Objects
 	public void setMonster(Monster monster) {
 		this.monster = monster;
 	}
-	
+
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-	
-	
 
 	// Default constructor
 	// create a new Scanner to be used
@@ -52,6 +50,13 @@ public class TxtGUI {
 		String[] items = { "Yes, get me out!", "No, I'll stay." };
 		int choice = doMenu(title, items);
 		return (choice == 2);
+	}
+
+	public boolean handleResurrectionMenu() {
+		String title = "Do you want to respawn?";
+		String[] items = { "Yes, I want to live!", "No, I'd rather die." };
+		int choice = doMenu(title, items);
+		return (choice == 1);
 	}
 
 	// Display the title
@@ -93,7 +98,7 @@ public class TxtGUI {
 		printLine("Potions when they are killed.", Align.LEFT);
 		printFooter();
 	}
-	
+
 	// Display when a new monster apperared
 	public void displayNewMonster() {
 		printHeader();
@@ -104,10 +109,9 @@ public class TxtGUI {
 		printLine("Health: " + monster.getHealth(), Align.LEFT);
 		printFooter();
 	}
-	
+
 	// Display the outcome of a fight
-	public void displayFight(int damagePlayer,
-			int damageMonster) {
+	public void displayFight(int damagePlayer, int damageMonster) {
 		printHeader();
 		printLine("You attack " + monster.getName() + ".", Align.LEFT);
 		printLine("You deal " + damagePlayer + " Points damage.", Align.LEFT);
@@ -153,10 +157,10 @@ public class TxtGUI {
 		printLine(monster.getName(), Align.CENTER);
 		if (damageMonster > 0) {
 			printSeparator();
-			printLine("Just before you could", Align.LEFT);
-			printLine("escape, " + monster.getName(), Align.LEFT);
-			printLine("hit you and caused " , Align.LEFT);
-			printLine("" + damageMonster +" health points damage.", Align.LEFT);
+			printLine("Just before you could escape", Align.LEFT);
+			printLine( monster.getName(), Align.CENTER);
+			printLine("hit you and caused ", Align.LEFT);
+			printLine("" + damageMonster + " health points damage.", Align.LEFT);
 		}
 		printFooter();
 	}
@@ -165,10 +169,15 @@ public class TxtGUI {
 	public void displayEndMessage() {
 		printHeader();
 		printLine("FINAL STATISTICS", Align.CENTER);
+		printSeparator();
 		printLine("You killed: " + player.getKills() + " monsters.", Align.LEFT);
-		printLine("You died:   " + player.getDeathCount() + " times.", Align.LEFT);
-		printLine("Your final health is: " + player.getHealth() + " HP.", Align.LEFT);
-		printLine("You drank: " + player.getHealthPotionCount() + " Health Potions.", Align.LEFT);
+		printLine("You escaped: " + player.getRunawayCount() + " times.", Align.LEFT);
+		printLine("You died:   " + player.getDeathCount() + " times.",
+				Align.LEFT);
+		printLine("Your final health is: " + player.getHealth() + " HP.",
+				Align.LEFT);
+		printLine("You drank: " + player.getHealthPotionCount()
+				+ " Health Potions.", Align.LEFT);
 		printSeparator();
 		printHeader();
 		printLine("G O O D B Y E !", Align.CENTER);
@@ -203,16 +212,6 @@ public class TxtGUI {
 		printSeparator();
 		printLine(monster.getName(), Align.CENTER);
 		printLine("killed you!", Align.LEFT);
-		printSeparator();
-		printHeader();
-		printLine("FINAL STATISTICS", Align.CENTER);
-		printSeparator();
-		printLine("You have killed ", Align.LEFT);
-		String monsterKills = ((player.getKills() == 0) ? "no monsters."
-				: (player.getKills() == 1) ? "1 monster." : ""
-						+ player.getKills() + " monsters.");
-
-		printLine(monsterKills, Align.LEFT);
 		printFooter();
 	}
 
@@ -251,8 +250,23 @@ public class TxtGUI {
 		printFooter();
 	}
 
+	public void displayResurrection() {
+		printHeader();
+		printLine("R E J O I C E !", Align.CENTER);
+		printSeparator();
+		printLine("The Gods have been in a very", Align.LEFT);
+		printLine("generous mood and have", Align.LEFT);
+		printLine("decided that you have", Align.LEFT);
+		printLine("proven to be a worthy fighter.", Align.LEFT);
+		printSeparator();
+		printLine("As a token of their appreciation", Align.LEFT);
+		printLine("they offer to bring you back to", Align.LEFT);
+		printLine("life.", Align.LEFT);
+		printFooter();
+	}
+
 	// Auxiliary Methods
-	
+
 	// Print a section line
 	private void printSection() {
 		System.out.println("\t*******************************************");

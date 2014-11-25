@@ -83,19 +83,15 @@ public class Game {
 					playerIsDead();
 				}
 			}
-			// TODO: Runaway handling needs changing
-			// if (runaway) {
-			// Player ran away, we need a new monster and display some text
-			// gui.displayRunAway(monster);
-			// }
 			
-			
-		// Outer game loop runs until the player quits
+		    // Outer game loop runs until the player quits
 			// Even if the player dies.
 			// If the player dies and does not resurrect
 			// hasQuit will be set.
 		} while (!player.hasQuit()); // End Outer Game loop
-		// TODO: Handle Player Death
+		
+		gui.displayEndMessage();
+		
 	}
 
 	private void doInnerGameLoop() {
@@ -105,7 +101,9 @@ public class Game {
 			doMainMenu();
 
 			// Menu choices handled, display some statistics
-			gui.displayStats();
+			if(!player.hasQuit()) {
+				gui.displayStats();
+			}
 
 		} while ((!player.hasQuit()) && (!player.hasRunAway())
 				&& (!monster.isDead()) && (!player.isDead()));
@@ -169,7 +167,7 @@ public class Game {
 		player.setRunAway();
 		int damageMonster = 0;
 		if (rnd.nextInt(100) < MONSTER_ATTACK_CHANCE) {
-				monster.attack();
+				damageMonster = monster.attack();
 		}
 		gui.displayRunAway(damageMonster);
 		player.receiveDamage(damageMonster);
@@ -188,6 +186,15 @@ public class Game {
 	private void playerIsDead() {
 		player.incDeathCount();
 		gui.displayPlayerKill();
+		if (player.canResurrect()) {
+			gui.displayResurrection();
+			if(gui.handleResurrectionMenu()) {
+				player.resurrect();
+			} 
+			else {
+				player.setQuit();
+			}
+		}
 	}
 
 	// Check if the monster died
